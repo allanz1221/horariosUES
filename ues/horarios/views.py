@@ -23,7 +23,21 @@ def aula(request, id):
     #return JsonResponse(citas, safe=False)
     #return HttpResponse("Hola")
     aulas = Aula.objects.filter(id=id)
+    clases = Clase.objects.filter(aula_id=id)
     context = {
         "aulas": aulas,
+        "clases": clases,
     }
     return render(request, "aula.html", context)
+
+
+def claseJson(request, id):
+    clases = list(Clase.objects.filter(aula_id=id).values())
+
+
+    return JsonResponse(clases, safe=False)
+
+def Horario_Generacion(request, id_pe, id_semestre, grupo):
+    #http://127.0.0.1:8000/api/prueba/1/2/01
+    clases = list(Clase.objects.filter(materia__semestre=id_semestre, materia__grupo=grupo, materia__pe_id=id_pe).values())
+    return JsonResponse(clases, safe=False)

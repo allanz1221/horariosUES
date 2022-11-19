@@ -7,6 +7,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style type="text/css">
+    .tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}
+    .tftable th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}
+    .tftable tr {background-color:#d4e3e5;}
+    .tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}
+    .tftable tr:hover {background-color:#ffffff;}
+    </style>
+    
 </head>
 <body>
     {% for aula in aulas %} 
@@ -15,13 +23,55 @@
   <h1>Horarios aula: {{ aula.nombre }}
   </h1>
 </div>
-  
-<div class="container">
-        <a href="aula.html">Aula 1</a>
-
-    
-</div>
 {% endfor %}
+<div class="container">
 
+
+       <table id="horarioTable" class="tftable" border="1">
+            <tr><th>Horario</th><th>Lunes</th><th>Martes</th><th>Miercoles</th><th>Jueves</th><th>Viernes</th></tr>
+            
+          
+       
+          </table> 
+<br><br>
+
+          <table id="horarioTableData" class="tftable" border="1">
+            <tr><th>Materia</th><th>Maestro</th></tr>
+            {% for clase in clases %} 
+          
+              <tr><td> {{ clase.materia.clave }}-{{ clase.materia.nombre }} </td><td>{{ clase.maestro.nombre }}</td></tr>
+            {% endfor %}
+          </table>
+</div>
+
+
+
+<script>
+
+function addrow(){
+ var table = document.getElementById("horarioTable");
+  for (var i = 7; i < 19; i++) {
+    h_f = i+1;
+    var row = table.insertRow(-1);
+    row.innerHTML += "<tr> <td>"+i +":00 - "+h_f+":00 </td><td id='Lunes-"+i+"'></td><td id='Martes-"+i+"'></td><td id='Miercoles-"+i+"'></td><td id='Jueves-"+i+"'></td><td id='Viernes-"+i+"'></td></tr>";
+  }
+  rowsx();
+}
+
+addrow();
+
+function rowsx(){
+  {% for clase in clases %} 
+  dia = "{{ clase.dia.nombre }}"
+  hora = "{{ clase.hora }}"
+  var table{{ clase.id }} = document.getElementById("{{ clase.dia.nombre }}-{{ clase.hora }}");
+  table{{ clase.id }}.innerHTML = "{{ clase.materia.clave }} - {{ clase.maestro.nombre }}";
+
+  {% endfor %}
+}
+
+
+
+</script>
 </body>
 </html>
