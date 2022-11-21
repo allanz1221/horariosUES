@@ -16,12 +16,11 @@
     </style>
     
 </head>
-<body> 
-
-    {% for aula in aulas %} 
+<body>
+    {% for maestro in maestros %} 
 
 <div class="jumbotron text-center">
-  <h1>Horarios aula: {{ aula.nombre }}
+  <h1>Horarios docente: {{ maestro.nombre }} 
   </h1>
 </div>
 {% endfor %}
@@ -37,10 +36,14 @@
 <br><br>
 
           <table id="horarioTableData" class="tftable" border="1">
-            <tr><th>Materia</th><th>Maestro</th></tr>
+            <tr><th>Materia</th><th>Aula</th></tr>
             {% for clase in clases %} 
           
-              <tr><td> {{ clase.materia.clave }}-{{ clase.materia.nombre }} </td><td>{{ clase.maestro.nombre }}</td></tr>
+              <tr><td> {{ clase.materia.clave }}-{{ clase.materia.nombre }} </td><td>{{ clase.aula.nombre }}</td></tr>
+            {% endfor %}
+            {% for act in act_docentes %} 
+          
+            <tr><td> {{ act.actividad }} </td><td> </td></tr>
             {% endfor %}
           </table>
 </div>
@@ -57,6 +60,7 @@ function addrow(){
     row.innerHTML += "<tr> <td>"+i +":00 - "+h_f+":00 </td><td id='Lunes-"+i+"'></td><td id='Martes-"+i+"'></td><td id='Miercoles-"+i+"'></td><td id='Jueves-"+i+"'></td><td id='Viernes-"+i+"'></td></tr>";
   }
   rowsx();
+  rowsxact_docente();
 }
 
 addrow();
@@ -65,10 +69,25 @@ function rowsx(){
   {% for clase in clases %} 
   dia = "{{ clase.dia.nombre }}"
   hora = "{{ clase.hora }}"
-  var table{{ clase.id }} = document.getElementById("{{ clase.dia.nombre }}-{{ clase.hora }}");
-  table{{ clase.id }}.innerHTML = "{{ clase.materia.clave }} - {{ clase.maestro.nombre }}";
+    {% if clase.visible == True %}
+      var table{{ clase.id }} = document.getElementById("{{ clase.dia.nombre }}-{{ clase.hora }}");
+      table{{ clase.id }}.innerHTML = "{{ clase.materia.clave }} - {{ clase.aula.nombre }}";
+    {% endif %}
+  
 
   {% endfor %}
+  
+}
+
+function rowsxact_docente(){
+  {% for act in act_docentes %} 
+  dia = "{{ act.dia.nombre }}"
+  hora = "{{ act.hora }}"
+  var table{{ act.id }} = document.getElementById("{{ act.dia.nombre }}-{{ act.hora }}");
+  table{{ act.id }}.innerHTML = "{{ act.actividad.nombre }}";
+
+  {% endfor %}
+  
 }
 
 

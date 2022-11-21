@@ -15,18 +15,28 @@
 </div>
   
 <div class="container">
+  Por Aulas
     {% for aula in aulas %} 
     <p>
         <a href="aula/{{ aula.id }}">{{ aula.nombre }}</a>
     </p> 
-
-    
-      
-      
     {% endfor %}
-
-    
 </div>
+
+
+<div class="container">
+  Por Docentes
+    {% for maestro in maestros %} 
+    <p>
+        <a href="maestro/{{ maestro.id }}">{{ maestro.nombre }}</a>
+    </p> 
+    {% endfor %}
+</div>
+
+<div class="container">
+  Por Generaciones
+</div>
+
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from . models import  Maestro, Pe, Aula, Materia, Clase, Dia
+from . models import  Maestro, Pe, Aula, Materia, Clase, Dia, Categoria, Tratamiento, Comision, Actividad, Act_docente, TipoContrato
 admin.site.site_header = "Sitio web de Horarios"
 admin.site.site_title = "Universidad Estatal de Sonora"
 admin.site.index_title = "Bienvenidos al portal de administración"
@@ -46,3 +46,11 @@ class DiaAdmin(admin.ModelAdmin):
     use_bulk = True
 
 admin.site.register(Dia)
+
+admin.site.register(Categoria)
+admin.site.register(Tratamiento)
+admin.site.register(Comision)
+admin.site.register(Actividad)
+admin.site.register(TipoContrato)
+
+admin.site.register(Act_docente)
