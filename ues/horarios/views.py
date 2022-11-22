@@ -2,7 +2,7 @@ from email import message
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
-from .models import Maestro, Pe, Aula, Materia, Clase, Act_docente
+from .models import Maestro, Pe, Aula, Materia, Clase, Act_docente, Generacion
 from django.utils.timezone import localdate
 from django.views.defaults import bad_request, server_error
 #from .forms import AddCita
@@ -14,9 +14,11 @@ def index(request):
     #return HttpResponse("Hola")
     aulas = Aula.objects.all()
     maestros = Maestro.objects.all()
+    generacion = Generacion.objects.all()
     context = {
         "aulas": aulas,
         "maestros": maestros,
+        "generaciones": generacion,
     }
     return render(request, "index.html", context)
 
@@ -28,6 +30,16 @@ def aula(request, id):
         "clases": clases,
     }
     return render(request, "aula.html", context)
+
+def generacion(request, id):
+    generaciones = Generacion.objects.filter(id=id)
+    clases = Clase.objects.filter(materia__generacion_id=id)
+    context = {
+        "generaciones": generaciones,
+        "clases": clases,
+    }
+    return render(request, "generacion.html", context)
+
 
 def maestro(request, id):
     maestros = Maestro.objects.filter(id=id)
@@ -48,7 +60,7 @@ def claseJson(request, id):
 
 def Horario_Generacion(request, id_pe, id_semestre, grupo):
     #http://127.0.0.1:8000/api/prueba/1/2/01
-    clases = list(Clase.objects.filter(materia__semestre=id_semestre, materia__grupo=grupo, materia__pe_id=id_pe).values())
+    clases = list(Clase.objects.filter(materia__generacion__semestre=id_semestre, materia__generacion__grupo__nombre=grupo, materia__generacion__pe_id=id_pe).values())
     return JsonResponse(clases, safe=False)
 
 def guardarClase(request):

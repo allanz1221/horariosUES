@@ -8,6 +8,18 @@ class TipoContrato(models.Model):
     def __str__(self):
         return self.nombre
 
+class Grupo(models.Model):
+    nombre = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.nombre        
+
+
+class Plan(models.Model):
+    nombre = models.IntegerField()
+
+    def __str__(self):
+        return str(self.nombre)
 
 class Tratamiento(models.Model):
     nombre = models.CharField(max_length=200)
@@ -49,8 +61,9 @@ class Maestro(models.Model):
     comision = models.ForeignKey(Comision, on_delete=models.CASCADE)
     tratamiento = models.ForeignKey(Tratamiento, on_delete=models.CASCADE)
     tipocontrato = models.ForeignKey(TipoContrato, on_delete=models.CASCADE)
-    contrato_inicio = models.DateField()
-    contrato_fin = models.DateField()
+    fecha_nacimiento = models.DateField(blank=True) 
+    contrato_inicio = models.DateField(blank=True)
+    contrato_fin = models.DateField(blank=True)
 
     def __str__(self):
         return self.nombre+" - "+self.expediente
@@ -62,6 +75,12 @@ class Dia(models.Model):
     
     def __str__(self):
         return self.nombre
+
+class Semestre(models.Model):
+    nombre = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.nombre        
 
 class Actividad(models.Model):
     nombre = models.CharField(max_length=200)
@@ -76,19 +95,28 @@ class Aula(models.Model):
     def __str__(self):
         return self.nombre
 
+
+class Generacion(models.Model):
+    pe = models.ForeignKey(Pe, on_delete=models.CASCADE)
+    semestre = models.ForeignKey(Semestre, on_delete=models.CASCADE)
+    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.pe.clave) +" Sem:" + str(self.semestre) +" Gpo: "+ str(self.grupo)           
+
 class Materia(models.Model):
     nombre = models.CharField(max_length=200)
     clave = models.CharField(max_length=200)
-    pe = models.ForeignKey(Pe, on_delete=models.CASCADE)
+
     horas = models.IntegerField()
     horas_pla = models.IntegerField()
     horas_aula = models.IntegerField()
-    semestre = models.IntegerField()
-    plan = models.IntegerField()
-    grupo = models.CharField(max_length=200)
-
+    generacion = models.ForeignKey(Generacion, on_delete=models.CASCADE)
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
+    
     def __str__(self):
-        return str(self.pe.clave) + " " + str(self.clave) + " " + str(self.nombre) + " Semestre " + str(self.semestre)  + " Plan " + str(self.plan) + " Grupo " + str(self.grupo)
+        return str(self.generacion.pe.clave) + " " + str(self.clave) + " " + str(self.nombre) + " Semestre " + str(self.generacion.semestre)  + " Plan " + str(self.plan) + " Grupo " + str(self.generacion.grupo)
+
 
 class Clase(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE, related_name='materias_rel')
@@ -97,6 +125,8 @@ class Clase(models.Model):
     hora = models.IntegerField()
     dia = models.ForeignKey(Dia, on_delete=models.CASCADE)
     visible = models.BooleanField(default=True)
+
+    
     def __str__(self):
         return str(self.materia) + str(self.maestro) + " "+ str(self.aula) + " "+ str(self.hora) + " "+ str(self.dia)
 
@@ -114,3 +144,5 @@ class Act_docente(models.Model):
 
     def __str__(self):
         return str(self.maestro.nombre) +" " + str(self.actividad.nombre) +" "+ str(self.dia) + " "+ str(self.hora)   
+
+

@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +19,7 @@
     
 </head>
 <body> 
+  <a href="/"><img src="{% static 'logo.png' %}" width="200px" /></a>
 
     {% for aula in aulas %} 
 
@@ -29,7 +32,7 @@
 
 
        <table id="horarioTable" class="tftable" border="1">
-            <tr><th>Horario</th><th>Lunes</th><th>Martes</th><th>Miercoles</th><th>Jueves</th><th>Viernes</th></tr>
+            <tr><th>Horario</th><th>Lunes</th><th>Martes</th><th>Miercoles</th><th>Jueves</th><th>Viernes</th><th>Sabado</th></tr>
             
           
        
@@ -54,7 +57,7 @@ function addrow(){
   for (var i = 7; i < 19; i++) {
     h_f = i+1;
     var row = table.insertRow(-1);
-    row.innerHTML += "<tr> <td>"+i +":00 - "+h_f+":00 </td><td id='Lunes-"+i+"'></td><td id='Martes-"+i+"'></td><td id='Miercoles-"+i+"'></td><td id='Jueves-"+i+"'></td><td id='Viernes-"+i+"'></td></tr>";
+    row.innerHTML += "<tr> <td>"+i +":00 - "+h_f+":00 </td><td id='Lunes-"+i+"'></td><td id='Martes-"+i+"'></td><td id='Miercoles-"+i+"'></td><td id='Jueves-"+i+"'></td><td id='Viernes-"+i+"'></td><td id='Sabado-"+i+"'></td></tr>";
   }
   rowsx();
 }

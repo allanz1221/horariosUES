@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +11,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+  <a href="/"><img src="{% static 'logo.png' %}" width="200px" /></a>
 
 <div class="jumbotron text-center">
   <h1>Horarios</h1>
@@ -35,6 +38,11 @@
 
 <div class="container">
   Por Generaciones
+  {% for generacion in generaciones %} 
+  <p>
+      <a href="generacion/{{ generacion.id }}">{{ generacion.pe.clave }} Semestre: {{ generacion.semestre }} Gpo: {{ generacion.grupo }}        </a>
+  </p> 
+  {% endfor %}
 </div>
 
 

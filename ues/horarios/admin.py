@@ -1,16 +1,23 @@
 from django.contrib import admin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
-from . models import  Maestro, Pe, Aula, Materia, Clase, Dia, Categoria, Tratamiento, Comision, Actividad, Act_docente, TipoContrato
+from . models import  Maestro, Pe, Aula, Materia, Clase, Dia, Categoria, Tratamiento, Comision, Actividad, Act_docente, TipoContrato, Grupo, Generacion, Semestre, Plan
 admin.site.site_header = "Sitio web de Horarios"
 admin.site.site_title = "Universidad Estatal de Sonora"
 admin.site.index_title = "Bienvenidos al portal de administración"
 
-class MaestroAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'expediente')
-    use_bulk = True
+class MaestroResource(resources.ModelResource):
+    class Meta:
+        model = Maestro
 
-admin.site.register(Maestro)
+class MaestroAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    search_fields= ('nombre', 'expediente', 'pe', 'categoria')
+    list_display = ('nombre', 'expediente', 'pe', 'categoria')
+    resource_class = MaestroResource
+
+admin.site.register(Maestro, MaestroAdmin)
 
 class PeAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'clave')
@@ -18,19 +25,28 @@ class PeAdmin(admin.ModelAdmin):
 
 admin.site.register(Pe)
 
-class AulaAdmin(admin.ModelAdmin):
-    list_display = ('nombre')
-    use_bulk = True
+class AulaResource(resources.ModelResource):
+    class Meta:
+        model = Aula
 
-admin.site.register(Aula)
+class AulaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = AulaResource  
 
+admin.site.register(Aula, AulaAdmin)
 
-class MateriaAdmin(admin.ModelAdmin):
+class MateriaResource(resources.ModelResource):
+    class Meta:
+        model = Materia
+
+class MateriaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     #list_display = ('nombre', 'clave','pe','horas','horas_pla','horas_aula')
-    list_display = ('nombre')
+    search_fields= ('nombre','clave','horas','generacion','plan')
+    list_display = ('nombre','clave','horas','generacion','plan')
     use_bulk = True
+    resource_class = MateriaResource
 
-admin.site.register(Materia)
+
+admin.site.register(Materia, MateriaAdmin)
 
 
 class ClaseAdmin(admin.ModelAdmin):
@@ -54,3 +70,7 @@ admin.site.register(Actividad)
 admin.site.register(TipoContrato)
 
 admin.site.register(Act_docente)
+admin.site.register(Grupo)
+admin.site.register(Generacion)
+admin.site.register(Semestre)
+admin.site.register(Plan)
